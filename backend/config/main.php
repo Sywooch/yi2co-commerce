@@ -13,6 +13,13 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [
+        'db-manager' => [
+            'class' => 'bs\dbManager\Module',
+            // path to directory for the dumps
+            'path' => '@app/backups',
+            // list of registerd db-components
+            'dbList' => ['db'],
+        ],
         'backuprestore' => [
         'class' => '\oe\modules\backuprestore\Module',
         //'layout' => '@admin-views/layouts/main', or what ever layout you use

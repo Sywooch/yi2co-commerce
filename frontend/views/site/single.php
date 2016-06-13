@@ -6,6 +6,10 @@ use yii\helpers\ArrayHelper;
 use common\models\ProductAttribute;
 use common\models\ProductOptions;
 use yii\widgets\DetailView;
+use yii\widgets\Breadcrumbs;
+
+$this->params['breadcrumbs'][] = ['label' => $model->productCategory->product_category_name, 'url' => ['category', 'id' => $model->product_category_id]];
+$this->params['breadcrumbs'][] = ['label' => $model->product_name];
 ?>
 
 <div class="mainmenu-area">
@@ -48,20 +52,30 @@ use yii\widgets\DetailView;
             <div class="row">
                 <div class="col-md-4">
                     <div class="single-sidebar">
-                        <h2 class="sidebar-title">Search Products</h2>
-                        <form action="">
+                        <h2 class="sidebar-title">Product Category</h2>
+                        <?php foreach($category as $data): ?>
+                            <li>
+                                <a href="<?php
+                                echo Url::to(['site/category', 'id'=>$data->product_category_id]);
+                            ?>"><?php echo $data->product_category_name ?></a>
+                            </li>
+                        <?php endforeach; ?>
+                        <!-- <form action="">
                             <input type="text" placeholder="Search products...">
                             <input type="submit" value="Search">
-                        </form>
+                        </form> -->
                     </div>
                 </div>
                 
                 <div class="col-md-8">
                     <div class="product-content-right">
                         <div class="product-breadcroumb">
-                            <a href="">Home</a>
-                            <a href="">Category Name</a>
-                            <a href="">Sony Smart TV - 2015</a>
+                            <?=
+                            Breadcrumbs::widget(
+                                [
+                                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                                ]
+                            ) ?>
                         </div>
                         
                         <div class="row">
@@ -71,26 +85,30 @@ use yii\widgets\DetailView;
                                         <img src="<?php echo Yii::getAlias('@imageurl')."/".$model->product_image ?>" alt="">
                                     </div>
                                     
-                                    <div class="product-gallery">
+                                    <!-- <div class="product-gallery">
                                         <img src="img/product-thumb-1.jpg" alt="">
                                         <img src="img/product-thumb-2.jpg" alt="">
                                         <img src="img/product-thumb-3.jpg" alt="">
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
+
+                            <!-- 
+                                Untuk Number Formatter number_format(,0,',','.')
+                             -->
                             
                             <div class="col-sm-6">
                                 <div class="product-inner">
                                     <h2 class="product-name"><?php echo $model->product_name; ?></h2>
                                     <div class="product-inner-price">
                                         <?php if($model->deal_category_id == 1) { ?>
-                                            <ins>Rp <?php echo $model->product_price * ((100-$model->dealDeal->discount_value)/100);?></ins> <del>Rp <?php echo $model->product_price;?></del><!-- <br><?php echo $model->product_reward_point; ?> -->
+                                            <ins>Rp <?php echo number_format($model->product_price * ((100-$model->dealDeal->discount_value)/100),0,',','.');?></ins> <del>Rp <?php echo number_format($model->product_price,0,',','.');?></del><!-- <br><?php echo $model->product_reward_point; ?> -->
                                         <?php } elseif($model->deal_category_id == 2) {?>
-                                            <ins>Rp <?php echo $model->product_price?></ins> Buy <?php echo $model->dealDeal->quantity_threeshold ?> Get <?php echo $model->dealDeal->get_quantity - $model->dealDeal->quantity_threeshold ?><!-- <br><?php echo $model->product_reward_point; ?> -->
+                                            <ins>Rp <?php echo number_format($model->product_price,0,',','.')?></ins> Buy <?php echo $model->dealDeal->quantity_threeshold ?> Get <?php echo $model->dealDeal->get_quantity - $model->dealDeal->quantity_threeshold ?><!-- <br><?php echo $model->product_reward_point; ?> -->
                                         <?php } elseif($model->deal_category_id == 3) {?>
-                                            <ins>Rp <?php echo $model->product_price?></ins> Buy <?php echo $model->dealDeal->quantity_threeshold ?> Discount <?php echo $model->dealDeal->discount_value ?> %<!-- <br><?php echo $model->product_reward_point; ?> -->
+                                            <ins>Rp <?php echo number_format($model->product_price,0,',','.')?></ins> Buy <?php echo $model->dealDeal->quantity_threeshold ?> Discount <?php echo $model->dealDeal->discount_value ?> %<!-- <br><?php echo $model->product_reward_point; ?> -->
                                         <?php } else {?>
-                                            <ins>Rp <?php echo $model->product_price?></ins><!-- <br><?php echo $model->product_reward_point; ?> -->
+                                            <ins>Rp <?php echo number_format($model->product_price,0,',','.')?></ins><!-- <br><?php echo $model->product_reward_point; ?> -->
                                         <?php } ?>
                                     </div>    
                                     
@@ -115,7 +133,7 @@ use yii\widgets\DetailView;
                                     </form>    -->
                                     
                                     <div class="product-inner-category">
-                                        <p>Category: <a href="">Summer</a>. Tags: <a href="">awesome</a>, <a href="">best</a>, <a href="">sale</a>, <a href="">shoes</a>. </p>
+                                        <p>Category: <a href="<?php echo Url::to(['site/category', 'id'=>$model->product_category_id]);?>"><?php echo $data->product_category_name ?></a><!-- . Tags: <a href="">awesome</a>, <a href="">best</a>, <a href="">sale</a>, <a href="">shoes</a>.  --></p>
                                     </div> 
                                     
                                     <div role="tabpanel">
@@ -200,22 +218,26 @@ use yii\widgets\DetailView;
                                     <div class="product-f-image">
                                         <img src="<?php echo Yii::getAlias('@imageurl')."/".$data->product_image ?>" alt="">
                                         <div class="product-hover">
-                                            <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                            <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                            <a href="<?php echo Url::to(['cart/add-to-cart', 'id'=>$data->product_id]);?>" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                            <a href="<?php echo Url::to(['site/single', 'id'=>$data->product_id]) ?>" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                         </div>
                                     </div>
 
                                     <h2><a href=""><?php echo $data->product_name; ?></a></h2>
 
+                                    <!-- 
+                                        Untuk Number Formatter number_format(,0,',','.')
+                                     -->
+
                                     <div class="product-carousel-price">
                                         <?php if($data->deal_category_id == 1) { ?>
-                                            <ins>Rp <?php echo $data->product_price * ((100-$data->dealDeal->discount_value)/100);?></ins> <del>Rp <?php echo $data->product_price;?></del><!-- <br><?php echo $data->product_reward_point; ?> -->
+                                            <ins>Rp <?php echo number_format($data->product_price * ((100-$data->dealDeal->discount_value)/100),0,',','.');?></ins> <del>Rp <?php echo number_format($data->product_price,0,',','.');?></del><!-- <br><?php echo $data->product_reward_point; ?> -->
                                         <?php } elseif($data->deal_category_id == 2) {?>
-                                            <ins>Rp <?php echo $data->product_price?></ins> Buy <?php echo $data->dealDeal->quantity_threeshold ?> Get <?php echo $data->dealDeal->get_quantity - $data->dealDeal->quantity_threeshold ?><!-- <br><?php echo $data->product_reward_point; ?> -->
+                                            <ins>Rp <?php echo number_format($data->product_price,0,',','.');?></ins> Buy <?php echo $data->dealDeal->quantity_threeshold ?> Get <?php echo $data->dealDeal->get_quantity - $data->dealDeal->quantity_threeshold ?><!-- <br><?php echo $data->product_reward_point; ?> -->
                                         <?php } elseif($data->deal_category_id == 3) {?>
-                                            <ins>Rp <?php echo $data->product_price?></ins> Buy <?php echo $data->dealDeal->quantity_threeshold ?> Discount <?php echo $data->dealDeal->discount_value ?> %<!-- <br><?php echo $data->product_reward_point; ?> -->
+                                            <ins>Rp <?php echo number_format($data->product_price,0,',','.')?></ins> Buy <?php echo $data->dealDeal->quantity_threeshold ?> Discount <?php echo $data->dealDeal->discount_value ?> %<!-- <br><?php echo $data->product_reward_point; ?> -->
                                         <?php } else {?>
-                                            <ins>Rp <?php echo $data->product_price?></ins><!-- <br><?php echo $data->product_reward_point; ?> -->
+                                            <ins>Rp <?php echo number_format($data->product_price,0,',','.')?></ins><!-- <br><?php echo $data->product_reward_point; ?> -->
                                         <?php } ?>
                                     </div> 
                                 </div>

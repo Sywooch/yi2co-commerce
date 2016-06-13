@@ -85,12 +85,12 @@ class SiteController extends YiishopController
      *
      * @return mixed
      */
-    /*public function actionIndex()
-    {
-        return $this->render('index');
-    }*/
-
     public function actionIndex()
+    {
+        return $this->redirect(['site/shop']);
+    }
+
+    /*public function actionIndex()
     {
         $query = Product::find()->where(['product_status' => 10]);
         $countQuery = clone $query;
@@ -107,7 +107,7 @@ class SiteController extends YiishopController
             'models' => $models,
             'pages' => $pages,
         ]);
-    }
+    }*/
 
     /**
      * Logs in a user.
@@ -309,6 +309,7 @@ class SiteController extends YiishopController
 
     public function actionSingle($id)
     {
+        $category = ProductCategory::find()->all();
         $addComment = new Comment();
         $comment = Comment::find()
             ->where(['product_id' => Yii::$app->getRequest()->getQueryParam('id')])
@@ -331,6 +332,7 @@ class SiteController extends YiishopController
             'options' => $options,
             'comment' => $comment,
             'addComment' => $addComment,
+            'category' => $category,
         ]);
     }
 

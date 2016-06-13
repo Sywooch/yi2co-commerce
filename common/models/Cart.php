@@ -73,7 +73,7 @@ class Cart extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getCost() {
+    public static function getCost() {
         $cart = Cart::find()->where(['cart_code' => Yii::$app->session['cart_code']])->all();
         $discount = Cart::find()->where(['cart_code' => Yii::$app->session['cart_code']])->andWhere(['not', ['coupon_discount'=>NULL]])->one();
         $sql = "SELECT product.product_image, product.product_price, product.product_name, cart.* FROM cart,product WHERE product.product_id=cart.product_id AND cart.cart_code='" . Yii::$app->session['cart_code'] . "'";
@@ -86,10 +86,10 @@ class Cart extends \yii\db\ActiveRecord
             $sum = $sum+ (($model['product_price'] + $model['product_options_price'] - ($model['product_price']*($model['deal_discount']/100))) * $model['qty']);
             $i++;
         }
-        return $sum;
+        return number_format($sum,0,',','.');
     }
 
-    public function getCount() {
+    public static function getCount() {
         $sql = "SELECT product.product_image, product.product_price, product.product_name, cart.* FROM cart,product WHERE product.product_id=cart.product_id AND cart.cart_code='" . Yii::$app->session['cart_code'] . "'";
         $db = Yii::$app->db;
         $command = $db -> createCommand($sql);

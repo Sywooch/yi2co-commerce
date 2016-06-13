@@ -23,7 +23,6 @@
         "vova07/yii2-imperavi-widget": "*",
         "yiisoft/yii2-imagine": "^2.0",
         "miloschuman/yii2-highcharts-widget": "*",
-        "open-ecommerce/yii2-backuprestore": "dev-master",
         "kartik-v/yii2-grid": "@dev",
         "beaten-sect0r/yii2-db-manager": "*",
         "fedemotta/yii2-cronjob": "*"

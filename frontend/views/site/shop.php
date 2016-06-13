@@ -45,6 +45,10 @@
         <div class="container">
             <div class="row">
 
+                <!-- 
+                    Untuk Number Formatter number_format(,0,',','.')
+                 -->
+
                 <?php foreach($models as $data):?>
                 <div class="col-md-3 col-sm-6">
                     <div class="single-shop-product">
@@ -54,13 +58,13 @@
                         <h2><a href="<?php echo Url::to(['site/single', 'id' => $data->product_id]); ?>"><?php echo $data->product_name;?></a></h2>
                         <div class="product-carousel-price">
                             <?php if($data->deal_category_id == 1) { ?>
-                                <ins>Rp <?php echo $data->product_price * ((100-$data->dealDeal->discount_value)/100);?></ins> <del>Rp <?php echo $data->product_price;?></del><!-- <br><?php echo $data->product_reward_point; ?> -->
+                                <ins>Rp <?php echo number_format($data->product_price * ((100-$data->dealDeal->discount_value)/100),0,',','.');?></ins> <del>Rp <?php echo number_format($data->product_price,0,',','.');?></del><!-- <br><?php echo $data->product_reward_point; ?> -->
                             <?php } elseif($data->deal_category_id == 2) {?>
-                                <ins>Rp <?php echo $data->product_price?></ins> Buy <?php echo $data->dealDeal->quantity_threeshold ?> Get <?php echo $data->dealDeal->get_quantity - $data->dealDeal->quantity_threeshold ?><!-- <br><?php echo $data->product_reward_point; ?> -->
+                                <ins>Rp <?php echo number_format($data->product_price,0,',','.')?></ins> Buy <?php echo $data->dealDeal->quantity_threeshold ?> Get <?php echo $data->dealDeal->get_quantity - $data->dealDeal->quantity_threeshold ?><!-- <br><?php echo $data->product_reward_point; ?> -->
                             <?php } elseif($data->deal_category_id == 3) {?>
-                                <ins>Rp <?php echo $data->product_price?></ins> Buy <?php echo $data->dealDeal->quantity_threeshold ?> Discount <?php echo $data->dealDeal->discount_value ?> %<!-- <br><?php echo $data->product_reward_point; ?> -->
+                                <ins>Rp <?php echo number_format($data->product_price,0,',','.')?></ins> Buy <?php echo $data->dealDeal->quantity_threeshold ?> Discount <?php echo $data->dealDeal->discount_value ?> %<!-- <br><?php echo $data->product_reward_point; ?> -->
                             <?php } else {?>
-                                <ins>Rp <?php echo $data->product_price?></ins><!-- <br><?php echo $data->product_reward_point; ?> -->
+                                <ins>Rp <?php echo number_format($data->product_price,0,',','.')?></ins><!-- <br><?php echo $data->product_reward_point; ?> -->
                             <?php } ?>
                         </div>  
                         

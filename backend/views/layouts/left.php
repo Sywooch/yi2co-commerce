@@ -106,7 +106,8 @@
                             ['label' => 'Newsletter', 'icon' => 'fa fa-envelope', 'url' => ['/newsletter']],
                         ],
                     ],
-                    ['label' => 'Manage Order', 'icon' => 'fa fa-file-code-o', 'url' => ['/order']],
+                    ['label' => 'Manage Order', 'icon' => 'fa fa-fax', 'url' => ['/order']],
+                    ['label' => 'Backup Restore', 'icon' => 'fa fa-database', 'url' => ['/db-manager']],
                 ],
             ]
         ) ?>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 08 Jun 2016 pada 02.17
+-- Generation Time: 14 Jun 2016 pada 01.02
 -- Versi Server: 5.6.30-0ubuntu0.15.10.1
 -- PHP Version: 5.6.11-1ubuntu3.4
 
@@ -63,14 +63,18 @@ CREATE TABLE IF NOT EXISTS `cart` (
   `deal_quantity` int(11) DEFAULT NULL,
   `deal_quantity_threeshold` int(11) DEFAULT NULL,
   `cart_code` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `cart`
 --
 
 INSERT INTO `cart` (`id`, `product_id`, `product_options_id`, `product_options_name`, `product_options_price`, `qty`, `coupon_id`, `coupon_code`, `coupon_discount`, `deal_id`, `deal_category_id`, `deal_discount`, `deal_quantity`, `deal_quantity_threeshold`, `cart_code`) VALUES
-(1, 31, 10, NULL, 0, 1, NULL, NULL, NULL, 1, 1, 25, 0, NULL, '2QTTUD9U-TYYRFPGU');
+(1, 31, 10, NULL, 0, 1, NULL, NULL, NULL, 1, 1, 25, 0, NULL, '2QTTUD9U-TYYRFPGU'),
+(2, 31, 10, NULL, 0, 1, NULL, NULL, NULL, 1, 1, 25, 0, NULL, '6G47R04H-D29UI5SR'),
+(8, 31, 10, NULL, 0, 1, NULL, NULL, NULL, 1, 1, 25, 0, NULL, 'DOUIMMQ9-UTR8MDPN'),
+(11, 32, 11, 'default', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'GC2G280W-8G27AJ0D'),
+(12, 31, 10, NULL, 0, 1, NULL, NULL, NULL, 1, 1, 25, 0, NULL, 'GC2G280W-8G27AJ0D');
 
 -- --------------------------------------------------------
 
@@ -835,7 +839,7 @@ ALTER TABLE `bank_transfer`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `city`
 --

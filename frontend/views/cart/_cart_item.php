@@ -20,7 +20,7 @@
     </td>
 
     <td class="product-price">
-        <span class="amount">Rp <?= $model['product_price'] + $model['product_options_price'] - (($model['product_price'] + $model['product_options_price'])*($model['deal_discount']/100)) ?></span> 
+        <span class="amount">Rp <?= number_format($model['product_price'] + $model['product_options_price'] - (($model['product_price'] + $model['product_options_price'])*($model['deal_discount']/100)),0,',','.') ?></span> 
     </td>
 
     <td class="product-quantity">
@@ -30,6 +30,6 @@
     </td>
 
     <td class="product-subtotal">
-        <span class="amount">Rp <?= ($model['product_price'] + $model['product_options_price'] - (($model['product_price'] + $model['product_options_price']) * ($model['deal_discount']/100))) * $model['qty'] ?></span> 
+        <span class="amount">Rp <?= number_format(($model['product_price'] + $model['product_options_price'] - (($model['product_price'] + $model['product_options_price']) * ($model['deal_discount']/100))) * $model['qty'],0,',','.') ?></span> 
     </td>
 </tr>
