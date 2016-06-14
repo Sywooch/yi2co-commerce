@@ -24,16 +24,16 @@ use yii\widgets\DetailView;
             ?>
             <tr class="cart_item">
                 <td class="product-name">
-                    <?= $model['product_name'] ?> <?= $model['product_options_name'] ?> <?= $model['product_price']+$model['product_options_price'] ?><strong class="product-quantity"> × <?= $model['quantity'] ?></strong>
+                    <?= $model['product_name'] ?> <?= $model['product_options_name'] ?> <?= number_format($model['product_price']+$model['product_options_price'],0,',','.') ?><strong class="product-quantity"> × <?= $model['quantity'] ?></strong>
                     <?php if($model['deal_category_id'] == 1){ ?>
-                        <br>Discount -<?php echo (($model['product_price']+$model['product_options_price']) * ($model['deal_discount']/100)) * $model['quantity'] ?>
+                        <br>Discount -<?php echo number_format((($model['product_price']+$model['product_options_price']) * ($model['deal_discount']/100)) * $model['quantity'],0,',','.') ?>
                     <?php } ?>
                     <?php if($model['deal_category_id'] == 3 && $model['quantity'] >= $model['deal_quantity_threeshold']){ ?>
-                        <br>Discount -<?php echo (($model['product_price']+$model['product_options_price']) * ($model['deal_discount']/100)) * $model['quantity'] ?>
+                        <br>Discount -<?php echo number_format((($model['product_price']+$model['product_options_price']) * ($model['deal_discount']/100)) * $model['quantity'],0,',','.') ?>
                     <?php } ?>
                 </td>
                 <td class="product-total">
-                    <span class="amount">Rp <?= (($model['product_price'] + $model['product_options_price']) - (($model['product_price']+$model['product_options_price'])*($model['deal_discount']/100))) * $model['quantity'] ?></span> </td>
+                    <span class="amount">Rp <?= number_format((($model['product_price'] + $model['product_options_price']) - (($model['product_price']+$model['product_options_price'])*($model['deal_discount']/100))) * $model['quantity'],0,',','.') ?></span> </td>
             </tr>
             <?php $i++;endforeach; ?>
         </tbody>
@@ -41,14 +41,14 @@ use yii\widgets\DetailView;
 
             <tr class="cart-subtotal">
                 <th>Cart Subtotal</th>
-                <td><span class="amount">Rp <?php echo $sum;?></span>
+                <td><span class="amount">Rp <?php echo number_format($sum,0,',','.');?></span>
                 </td>
             </tr>
 
             <?php if($save != NULL){ ?>
             <tr class="cart-save">
                 <th>You Save</th>
-                <td><span class="amount">Rp <?php echo $save;?></span>
+                <td><span class="amount">Rp <?php echo number_format($save,0,',','.');?></span>
                 </td>
             </tr>
             <?php } ?>
@@ -65,7 +65,7 @@ use yii\widgets\DetailView;
 
             <tr class="order-total">
                 <th>Order Total</th>
-                <td><strong><span class="amount">Rp <?php echo $sum * ((100-$coupondiscount)/100) ?></span></strong> </td>
+                <td><strong><span class="amount">Rp <?php echo number_format($sum * ((100-$coupondiscount)/100),0,',','.') ?></span></strong> </td>
             </tr>
 
         </tfoot>

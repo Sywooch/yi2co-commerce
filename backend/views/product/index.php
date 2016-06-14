@@ -41,7 +41,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $data->manufacturer->manufacturer_name;
                 },
             ],
-            'product_price',
+            [
+                'class' => 'yii\grid\DataColumn',
+                'attribute' => 'product_price',
+                'value' => function ($data){
+                    return number_format($data->product_price,0,',','.');
+                },
+            ],
             'product_description:ntext',
             // 'product_image',
             'product_reward_point',

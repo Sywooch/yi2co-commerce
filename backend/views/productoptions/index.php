@@ -36,7 +36,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'product_options_name',
             'product_options_description:ntext',
-            'product_options_price',
+            [
+                'class' => 'yii\grid\DataColumn',
+                'attribute' => 'product_options_price',
+                'value' => function ($data){
+                    return number_format($data->product_options_price,0,',','.');
+                },
+            ],
             'product_options_tier',
 
             ['class' => 'yii\grid\ActionColumn'],

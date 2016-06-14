@@ -55,6 +55,18 @@ class MycouponController extends Controller
 				$data->save();
 			}
 		}*/
+
+		date_default_timezone_set('Asia/Jakarta');
+		$current_date = strtotime("now");
+		$countCouponlist = CouponList::find()->where(['coupon_list_status' => '0'])->all();
+
+		foreach($countCouponlist as $data){
+			$modelCoupon = Coupon::find()->where(['coupon_id'=>$data->coupon_id])->one();
+			if($modelCoupon->coupon_date_end <= $current_date){
+				$data->coupon_list_status = 20;
+				$data->save();
+			}
+		}
 		
 		return $this->render('index', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider,]);
 	}
@@ -67,6 +79,16 @@ class MycouponController extends Controller
 		$model = Coupon::find()
 			->where(['coupon_status' => Coupon::STATUS_ACTIVE])
 			->all();
+
+		date_default_timezone_set('Asia/Jakarta');
+		$current_date = strtotime("now");
+		$countCoupon = Coupon::find()->where(['coupon_status'=>'10'])->all();
+		foreach($countCoupon as $data){
+			if($data->coupon_date_end <= $current_date){
+				$data->coupon_status=0;
+				$data->save();
+			}
+		}
 		return $this->render('redeem', [
 			'model' => $model,
 			'modelCust' => $modelCust,

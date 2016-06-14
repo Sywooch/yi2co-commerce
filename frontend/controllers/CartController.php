@@ -4,6 +4,7 @@ namespace frontend\controllers;
 use Yii;
 use common\models\Cart;
 use common\models\ProductOptions;
+use common\models\Coupon;
 use common\models\CouponList;
 use common\components\YiishopController;
 
@@ -11,6 +12,24 @@ Class CartController extends YiishopController {
 	public $layout = 'storenew';
 
 	public function actionIndex() {
+        date_default_timezone_set('Asia/Jakarta');
+        $current_date = strtotime("now");
+        $countCoupon = Coupon::find()->where(['coupon_status'=>'10'])->all();
+        $countCouponlist = CouponList::find()->where(['coupon_list_status' => '0'])->all();
+        foreach($countCoupon as $data){
+            if($data->coupon_date_end <= $current_date){
+                $data->coupon_status=0;
+                $data->save();
+            }
+        }
+        foreach($countCouponlist as $data){
+            $modelCoupon = Coupon::find()->where(['coupon_id'=>$data->coupon_id])->one();
+            if($modelCoupon->coupon_date_end <= $current_date){
+                $data->coupon_list_status = 20;
+                $data->save();
+            }
+        }
+        
         $cart = Cart::find()->where(['cart_code' => Yii::$app->session['cart_code']])->all();
         $discount = Cart::find()->where(['cart_code' => Yii::$app->session['cart_code']])->andWhere(['not', ['coupon_discount'=>NULL]])->one();
 		$sql = "SELECT product.product_image, product.product_price, product.product_name, cart.* FROM cart,product WHERE product.product_id=cart.product_id AND cart.cart_code='" . Yii::$app->session['cart_code'] . "'";

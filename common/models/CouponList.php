@@ -19,6 +19,7 @@ class CouponList extends \yii\db\ActiveRecord
 {
     const COUPON_AVAILABLE = 0;
     const COUPON_USED = 10;
+    const COUPON_EXPIRED = 20;
 
     /**
      * @inheritdoc
@@ -38,7 +39,7 @@ class CouponList extends \yii\db\ActiveRecord
             [['coupon_id', 'customer_id', 'coupon_list_status'], 'integer'],
             [['coupon_code'], 'string', 'max' => 20],
             ['coupon_list_status', 'default', 'value' => self::COUPON_AVAILABLE],
-            ['coupon_list_status', 'in', 'range' => [self::COUPON_AVAILABLE, self::COUPON_USED]],
+            ['coupon_list_status', 'in', 'range' => [self::COUPON_AVAILABLE, self::COUPON_USED, self::COUPON_EXPIRED]],
 
         ];
     }
@@ -62,6 +63,9 @@ class CouponList extends \yii\db\ActiveRecord
         else if
             ($this->coupon_list_status == 10)
             return "Used";
+        else if
+            ($this->coupon_list_status == 20)
+            return "Expired";
         else
             return "Not Set";
     }

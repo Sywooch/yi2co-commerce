@@ -39,7 +39,7 @@ use yii\helpers\Html;
 
 <div class="container">
     <h3>Your Reward Point: <?php echo $modelCust->customer_reward_point; ?></h3>
-    <?php foreach ($model as $model): ?>
+    <?php $found=0;foreach ($model as $model): ?>
     <div class="row">
         <?php
             $x=\common\models\CouponList::find()
@@ -53,15 +53,19 @@ use yii\helpers\Html;
                         'coupon_name',
                         'redeem_point',
                         'coupon_discount',
-                        'coupon_date_end',
+                        [
+                            'attribute' => 'coupon_date_end',
+                            'format' => ['date'/*, 'php:d-m-Y'*/],
+                        ],
                     ],
                 ]);
+                $found += 1;
             }
         ?>
     </div>
     <?php endforeach;?>
-    <?php if(count($x)
-    !==0){?>
+    <?php if(count($model)
+    ==0||$found==0){?>
         <h3>There is no active offer this time, kindly check again later...</h3>
     <?php }; ?>
 </div>

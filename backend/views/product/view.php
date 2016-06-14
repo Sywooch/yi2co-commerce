@@ -40,7 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'product_name',
             'product_model',
-            'product_price',
+            [
+                'attribute' => 'product_price',
+                'value' => number_format($model->product_price,0,',','.'),
+            ],
             'product_description:ntext',
             'product_image',
             'product_reward_point',
