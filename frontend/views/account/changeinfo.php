@@ -58,6 +58,12 @@
 
                 <?= $form->field($model, 'customer_address')->TextInput() ?>
 
+                <?php
+                    echo $form->field($model, 'customer_gender')->dropDownList(['0' => 'Female', '10' => 'Male'], ['prompt' => 'Select Gender']);
+                ?>
+
+                <?= $form->field($model, 'newsletter')->dropDownList(['0' => 'No', '10' => 'Yes'], ['prompt' => 'Receive Newsletter']);?>
+
                 <div class="form_group">
                     <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
                 </div>
