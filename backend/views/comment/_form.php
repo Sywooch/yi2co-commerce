@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use common\models\Product;
 use common\models\Customer;
 use kartik\widgets\DatePicker;
+use kartik\widgets\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Comment */
@@ -13,33 +14,48 @@ use kartik\widgets\DatePicker;
 ?>
 
 <div class="comment-form">
+    <div class="row">
+        <div class="col-lg-5">
+            <?php $form = ActiveForm::begin(); ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+            <?php
+                echo $form->field($model, 'product_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(Product::find()->all(), 'product_id', 'product_name'),
+                    'options' => ['placeholder' => 'Select a product ...'],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ])->label('Product');
+            ?>
 
-    <?= Html::activeLabel($model, 'product_id') ?> <br>
-    <?= Html::activeDropDownList($model, 'product_id',
-        ArrayHelper::map(Product::find()->all(), 'product_id', 'product_name'))
-    ?> <br><br>
+            <?php
+                echo $form->field($model, 'customer_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(Customer::find()->all(), 'customer_id', 'customer_name'),
+                    'options' => ['placeholder' => 'Select a customer ...'],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ])->label('Customer');
+            ?>
 
-    <?= Html::activeLabel($model, 'customer_id') ?> <br>
-    <?= Html::activeDropDownList($model, 'customer_id',
-        ArrayHelper::map(Customer::find()->all(), 'customer_id', 'customer_name'))
-    ?> <br><br>
+            <?= $form->field($model, 'comment_text')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'comment_text')->textarea(['rows' => 6]) ?>
+            <?= $form->field($model, 'comment_date_added')->widget(DatePicker::classname(), [
+                'options' => ['placeholder' => 'Comment Date Added'],
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'format' => 'yyyy-mm-dd'
+                ]
+            ]); ?>
 
-    <?= $form->field($model, 'comment_date_added')->widget(DatePicker::classname(), [
-        'options' => ['placeholder' => 'Comment Date Added'],
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'yyyy-mm-dd'
-        ]
-    ]); ?>
+            <div class="form-group">
+                <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            </div>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?php ActiveForm::end(); ?>
+        </div>
     </div>
 
-    <?php ActiveForm::end(); ?>
+    
 
 </div>

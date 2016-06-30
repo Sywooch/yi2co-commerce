@@ -41,7 +41,7 @@ class ProductoptionsSearch extends ProductOptions
      */
     public function search($params)
     {
-        $query = ProductOptions::find();
+        $query = ProductOptions::find()->where(['not',['product_options_name' => "default"]]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

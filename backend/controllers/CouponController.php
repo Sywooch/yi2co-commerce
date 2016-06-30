@@ -78,7 +78,7 @@ class CouponController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    /*public function actionCreate()
     {
         $model = new Coupon();
 
@@ -86,6 +86,36 @@ class CouponController extends Controller
             return $this->redirect(['view', 'id' => $model->coupon_id]);
         } else {
             return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }*/
+
+    public function actionCreate()
+    {
+        $model = new Coupon();
+
+        if ($model->load(Yii::$app->request->post())) {
+            /*$model->coupon_date_end=strtotime($_POST['Coupon']['coupon_date_end']);*/
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->coupon_id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post())) {
+            /*$model->coupon_date_end=strtotime($_POST['Coupon']['coupon_date_end']);*/
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->coupon_id]);
+        } else {
+            return $this->render('update', [
                 'model' => $model,
             ]);
         }
@@ -97,7 +127,7 @@ class CouponController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    /*public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
@@ -108,7 +138,7 @@ class CouponController extends Controller
                 'model' => $model,
             ]);
         }
-    }
+    }*/
 
     /**
      * Deletes an existing Coupon model.

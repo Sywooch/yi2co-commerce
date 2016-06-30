@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => $model->province->province_name,
             ],
             'city_name',
+            'shipping_cost',
         ],
     ]) ?>
 

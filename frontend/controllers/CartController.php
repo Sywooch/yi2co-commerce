@@ -17,14 +17,14 @@ Class CartController extends YiishopController {
         $countCoupon = Coupon::find()->where(['coupon_status'=>'10'])->all();
         $countCouponlist = CouponList::find()->where(['coupon_list_status' => '0'])->all();
         foreach($countCoupon as $data){
-            if($data->coupon_date_end <= $current_date){
+            if(strtotime($data->coupon_date_end) <= $current_date){
                 $data->coupon_status=0;
                 $data->save();
             }
         }
         foreach($countCouponlist as $data){
             $modelCoupon = Coupon::find()->where(['coupon_id'=>$data->coupon_id])->one();
-            if($modelCoupon->coupon_date_end <= $current_date){
+            if(strtotime($modelCoupon->coupon_date_end) <= $current_date){
                 $data->coupon_list_status = 20;
                 $data->save();
             }
@@ -45,6 +45,7 @@ Class CartController extends YiishopController {
 		for ($i = 1; $i <= $count; $i++) {
 
 			$model = Cart::findOne($_POST['id' . $i]);
+            $x = \common\models\Product::findOne($model->product_id);
             if (isset($_POST['coupon_code'])) {
                 $discount = CouponList::find()
                     ->where(['coupon_code'=>$_POST['coupon_code'], 'customer_id'=>Yii::$app->user->id, 'coupon_list_status'=>0])
@@ -66,6 +67,11 @@ Class CartController extends YiishopController {
                     $model->save();
                 } else {
                     $model->deal_discount = NULL;
+                    $model->save();
+                }
+            }else if($model->deal_category_id == 4){
+                if($model->checkSumThreeshold($model->qty * ($x->product_price + $model->product_options_price), $model->deal_sum_threeshold)){
+                    $model->deal_discount = $y->discount_value;
                     $model->save();
                 }
             }
@@ -165,17 +171,44 @@ Class CartController extends YiishopController {
                     $deal_category_id = $y->deal_category_id;
                     $deal_quantity = $y->get_quantity - $y->quantity_threeshold;
                     $deal_quantity_threeshold = $y->quantity_threeshold;
+                    $deal_sum_threeshold = NULL;
                 } else {
                     $deal_discount = NULL;
                     $deal_category_id = $y->deal_category_id;
                     $deal_quantity = $y->get_quantity - $y->quantity_threeshold;
                     $deal_quantity_threeshold = $y->quantity_threeshold;
+                    $deal_sum_threeshold = NULL;
                 }
             } else {
                 $deal_discount = NULL;
                 $deal_category_id = $y->deal_category_id;
                 $deal_quantity = $y->get_quantity - $y->quantity_threeshold;
                 $deal_quantity_threeshold = $y->quantity_threeshold;
+                $deal_sum_threeshold = NULL;
+            }
+        }
+        else if(count($y) > 0 && $y->deal_category_id == 4){
+            $cart = Cart::find()->where(['product_id' => $id, 'cart_code' => Yii::$app->session['cart_code']])->one();
+            if(count($cart)>0){
+                if(Cart::checkSumThreeshold($cart->qty * ($x->product_price + $cart->product_options_price), $cart->deal_sum_threeshold)){
+                    $deal_discount = $y->discount_value;
+                    $deal_category_id = $y->deal_category_id;
+                    $deal_sum_threeshold = $y->sum_threeshold;
+                    $deal_quantity = NULL;
+                    $deal_quantity_threeshold = NULL;
+                } else {
+                    $deal_discount = NULL;
+                    $deal_category_id = $y->deal_category_id;
+                    $deal_sum_threeshold = $y->sum_threeshold;
+                    $deal_quantity = NULL;
+                    $deal_quantity_threeshold = NULL;
+                }
+            } else {
+                $deal_discount = NULL;
+                $deal_category_id = $y->deal_category_id;
+                $deal_sum_threeshold = $y->sum_threeshold;
+                $deal_quantity = NULL;
+                $deal_quantity_threeshold = NULL;
             }
         }
         else if(count($y) > 0) {
@@ -183,11 +216,13 @@ Class CartController extends YiishopController {
             $deal_category_id = $y->deal_category_id;
             $deal_quantity = $y->get_quantity - $y->quantity_threeshold;
             $deal_quantity_threeshold = $y->quantity_threeshold;
+            $deal_sum_threeshold = $y->sum_threeshold;
         } else {
             $deal_category_id=NULL;
             $deal_discount=NULL;
             $deal_quantity=NULL;
             $deal_quantity_threeshold=NULL;
+            $deal_sum_threeshold = NULL;
         }
 
         $model = new Cart();
@@ -200,7 +235,9 @@ Class CartController extends YiishopController {
         $model->deal_discount = $deal_discount;
         $model->deal_quantity = $deal_quantity;
         $model->deal_quantity_threeshold = $deal_quantity_threeshold;
+        $model->deal_sum_threeshold = $deal_sum_threeshold;
         $model->product_options_id = $opt->product_options_id;
+        $model->product_options_name = $opt->product_options_name;
         if ($this->addQuantity($id, Yii::$app->session['cart_code'], 1)) {
             $this->redirect(['/cart']);
         } elseif ($model->save()) {
@@ -226,6 +263,11 @@ Class CartController extends YiishopController {
 
             if(count($y) > 0 && $y->deal_category_id == 3) {
                 if(Cart::checkQuantityThreeshold($modelCart->qty, $modelCart->deal_quantity_threeshold)){
+                    $modelCart->deal_discount = $y->discount_value;
+                    $modelCart->save();
+                }
+            } else if(count($y) > 0 && $y->deal_category_id == 4){
+                if(Cart::checkSumThreeshold($modelCart->qty * ($x->product_price + $modelCart->product_options_price), $modelCart->deal_sum_threeshold)){
                     $modelCart->deal_discount = $y->discount_value;
                     $modelCart->save();
                 }
@@ -273,11 +315,13 @@ Class CartController extends YiishopController {
                 $deal_category_id = $y->deal_category_id;
                 $deal_quantity = $y->get_quantity - $y->quantity_threeshold;
                 $deal_quantity_threeshold = $y->quantity_threeshold;
+                $deal_sum_threeshold = $y->sum_threeshold;
             } else {
                 $deal_category_id=NULL;
                 $deal_discount=NULL;
                 $deal_quantity=NULL;
                 $deal_quantity_threeshold=NULL;
+                $deal_sum_threeshold = NULL;
             }
 
             $model->deal_id = $deal_id;
@@ -285,6 +329,7 @@ Class CartController extends YiishopController {
             $model->deal_discount = $deal_discount;
             $model->deal_quantity = $deal_quantity;
             $model->deal_quantity_threeshold = $deal_quantity_threeshold;
+            $model->deal_sum_threeshold = $deal_sum_threeshold;
 
             if(isset($_POST['MultipleAddToCartForm']['product_options_id']) && $this->addMultipleQuantityWithOptions($id, Yii::$app->session['cart_code'], $quantity, $_POST['MultipleAddToCartForm']['product_options_id'])){
                 $this->redirect(['/cart']);
@@ -319,6 +364,11 @@ Class CartController extends YiishopController {
                     $modelCart->deal_discount = $y->discount_value;
                     $modelCart->save();
                 }
+            } else if(count($y) > 0 && $y->deal_category_id == 4){
+                if(Cart::checkSumThreeshold($modelCart->qty * ($x->product_price + $modelCart->product_options_price), $modelCart->deal_sum_threeshold)){
+                    $modelCart->deal_discount = $y->discount_value;
+                    $modelCart->save();
+                }
             }
 
             return TRUE;
@@ -344,6 +394,11 @@ Class CartController extends YiishopController {
 
             if(count($y) > 0 && $y->deal_category_id == 3) {
                 if(Cart::checkQuantityThreeshold($modelCart->qty, $modelCart->deal_quantity_threeshold)){
+                    $modelCart->deal_discount = $y->discount_value;
+                    $modelCart->save();
+                }
+            }else if(count($y) > 0 && $y->deal_category_id == 4){
+                if(Cart::checkSumThreeshold($modelCart->qty * ($x->product_price + $modelCart->product_options_price), $modelCart->deal_sum_threeshold)){
                     $modelCart->deal_discount = $y->discount_value;
                     $modelCart->save();
                 }

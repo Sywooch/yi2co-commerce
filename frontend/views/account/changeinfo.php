@@ -2,6 +2,7 @@
     use yii\widgets\Menu;
     use yii\helpers\Html;
     use yii\bootstrap\ActiveForm;
+    use kartik\widgets\DatePicker;
 ?>
 
 <div class="product-big-title-area">
@@ -48,7 +49,13 @@
 
                 <?= $form->field($model, 'customer_name')->TextInput() ?>
 
-                <?= $form->field($model, 'customer_dob')->TextInput() ?>
+                <?= $form->field($model, 'customer_dob')->widget(DatePicker::classname(), [
+                    'options' => ['placeholder' => 'Enter Date of Birth'],
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'yyyy/mm/dd'
+                    ]
+                ]); ?>
 
                 <?php
                     echo $form->field($model, 'customer_gender')->dropDownList(['0' => 'Female', '10' => 'Male'], ['prompt' => 'Select Gender']);
@@ -56,7 +63,7 @@
 
                 <?= $form->field($model, 'customer_telephone')->TextInput() ?>
 
-                <?= $form->field($model, 'customer_address')->TextInput() ?>
+                <!-- <?= $form->field($model, 'customer_address')->TextInput() ?> -->
 
                 <?php
                     echo $form->field($model, 'customer_gender')->dropDownList(['0' => 'Female', '10' => 'Male'], ['prompt' => 'Select Gender']);

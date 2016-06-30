@@ -11,30 +11,35 @@ use common\models\DeliveryAddress;
 ?>
 
 <div class="order-form">
+    <div class="row">
+        <div class="col-lg-5">
+            <?php $form = ActiveForm::begin(); ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+            <?= $form->field($model, 'order_code')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'order_code')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'order_date')->textInput() ?>
 
-    <?= $form->field($model, 'order_date')->textInput() ?>
+            <!-- <?php
+                echo $form->field($model, 'payment_status')->dropDownList(['0' => 'Not Confirm', '10' => 'Not Verified', '20' => 'Verified'], ['prompt' => 'Payment Status']);
+            ?> -->
 
-    <!-- <?php
-        echo $form->field($model, 'payment_status')->dropDownList(['0' => 'Not Verified', '10' => 'Pending', '20' => 'Verified'], ['prompt' => 'Payment Status']);
-    ?> -->
+            <?php
+                echo $form->field($model, 'order_status')->dropDownList(['0' => 'Pending', '10' => 'Processing', '20' => 'Delivered'], ['prompt' => 'Order Status']);
+            ?>
 
-    <?php
-        echo $form->field($model, 'order_status')->dropDownList(['0' => 'Pending', '10' => 'Processing'], ['prompt' => 'Order Status']);
-    ?>
+            <?= Html::activeLabel($model, 'delivery_address_id') ?> <br>
+            <?= Html::activeDropDownList($model, 'delivery_address_id',
+                ArrayHelper::map(DeliveryAddress::find()->all(), 'delivery_address_id', 'delivery_address_address'))
+            ?> <br><br>
 
-    <?= Html::activeLabel($model, 'delivery_address_id') ?> <br>
-    <?= Html::activeDropDownList($model, 'delivery_address_id',
-        ArrayHelper::map(DeliveryAddress::find()->all(), 'delivery_address_id', 'delivery_address_address'))
-    ?> <br><br>
+            <div class="form-group">
+                <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            </div>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?php ActiveForm::end(); ?>
+        </div>
     </div>
 
-    <?php ActiveForm::end(); ?>
+    
 
 </div>

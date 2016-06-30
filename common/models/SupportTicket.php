@@ -38,7 +38,7 @@ class SupportTicket extends \yii\db\ActiveRecord
     {
         return [
             [['support_ticket_category_id', 'issue', 'customer_id'], 'required'],
-            [['support_ticket_category_id', 'customer_id', 'support_ticket_status'], 'integer'],
+            [['support_ticket_category_id', 'customer_id', 'support_ticket_status', 'notification'], 'integer'],
             [['date_submit'], 'safe'],
             [['issue'], 'string', 'max' => 64]
         ];
@@ -56,6 +56,7 @@ class SupportTicket extends \yii\db\ActiveRecord
             'date_submit' => 'Date Submit',
             'customer_id' => 'Customer ID',
             'support_ticket_status' => 'Support Ticket Status',
+            'notification' => 'Notification'
         ];
     }
 
@@ -65,6 +66,46 @@ class SupportTicket extends \yii\db\ActiveRecord
         else if
             ($this->support_ticket_status == 10)
             return "Open";
+        else
+            return "Not Set";
+    }
+
+    /*public function checkNotification() {
+        $notification = SupportTicket::find()->where('notification' == 0)->one();
+        
+        return count($notification);
+        count(common\models\SupportTicket::find()->where('notification' == 0)->all());
+    }*/
+
+    /*public static function getNotification() {
+        $notification = SupportTicket::find()->where('notification' == 0)->all();
+        $notif=0;
+        foreach($notification as $model){
+            $notif = $notif + 1;
+        }
+        return $notif;
+    }*/
+
+    public static function getNotification() {
+        $sql = "SELECT * FROM support_ticket WHERE notification = 0";
+        $db = Yii::$app->db;
+        $command = $db -> createCommand($sql);
+        $results = $command->queryAll();
+        $i=1;
+        $count=0;
+        foreach($results as $model){
+            $count = $count + 1;
+            $i++;
+        }
+        return $count;
+    }
+
+    public function formatNotification() {
+        if ($this->notification == 0)
+            return "Not Read";
+        else if
+            ($this->notification == 10)
+            return "Read";
         else
             return "Not Set";
     }

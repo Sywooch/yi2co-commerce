@@ -48,6 +48,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'support_ticket_status',
                 'value' => function ($data){return Html::encode($data->formatSupportstatus());},
             ],
+            [
+                'class' => 'yii\grid\DataColumn',
+                'attribute' => 'notification',
+                'value' => function ($data){return Html::encode($data->formatNotification());},
+                'filter' => [0=>'Not Read', 10=>'Read']
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

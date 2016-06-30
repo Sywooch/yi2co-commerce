@@ -35,6 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
 /*            'city_id',
             'province_id',*/
             'city_name',
+            [
+                'class' => 'yii\grid\DataColumn',
+                'attribute' => 'shipping_cost',
+                'value' => function ($data){
+                    return number_format($data->shipping_cost,0,',','.');
+                },
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

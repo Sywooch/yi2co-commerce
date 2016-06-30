@@ -13,35 +13,40 @@ use kartik\widgets\Select2;
 ?>
 
 <div class="coupon-list-form">
+    <div class="row">
+        <div class="col-lg-5">
+            <?php $form = ActiveForm::begin(); ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+            <?php
+                echo $form->field($model, 'coupon_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(Coupon::find()->all(), 'coupon_id', 'coupon_name'),
+                    'options' => ['placeholder' => 'Select a coupon group ...'],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ])->label('Coupon Group');
+            ?>
 
-    <?php
-        echo $form->field($model, 'coupon_id')->widget(Select2::classname(), [
-            'data' => ArrayHelper::map(Coupon::find()->all(), 'coupon_id', 'coupon_name'),
-            'options' => ['placeholder' => 'Select a coupon group ...'],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ])->label('Coupon Group');
-    ?>
+            <?php
+                echo $form->field($model, 'customer_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(Customer::find()->all(), 'customer_id', 'username'),
+                    'options' => ['placeholder' => 'Select a customer ...'],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ])->label('Customer Username');
+            ?>
 
-    <?php
-        echo $form->field($model, 'customer_id')->widget(Select2::classname(), [
-            'data' => ArrayHelper::map(Customer::find()->all(), 'customer_id', 'username'),
-            'options' => ['placeholder' => 'Select a customer ...'],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ])->label('Customer Username');
-    ?>
+            <?= $form->field($model, 'coupon_code')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'coupon_code')->textInput(['maxlength' => true]) ?>
+            <div class="form-group">
+                <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            </div>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?php ActiveForm::end(); ?>
+        </div>
     </div>
 
-    <?php ActiveForm::end(); ?>
+    
 
 </div>

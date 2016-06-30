@@ -65,9 +65,9 @@
                                             ?>
                                             <tr class="cart_item">
                                                 <td class="product-name">
-                                                    <?= $model['product_name'] ?> <?= $model['product_options_name'] ?> <?= number_format($model['product_price']+$model['product_options_price'],0,',','.') ?><strong class="product-quantity"> × <?= $model['qty'] ?></strong>
+                                                    <?= $model['product_name'] ?> <?php if($model['product_options_name']!="default"){echo $model['product_options_name'];}; ?> Rp <?= number_format($model['product_price']+$model['product_options_price'],0,',','.') ?><strong class="product-quantity"> <?= $model['qty'] ?> Pc/s</strong>
                                                     <?php if($model['deal_category_id'] == 1){ ?>
-                                                        <br>Discount -<?php echo number_format((($model['product_price']+$model['product_options_price']) * ($model['deal_discount']/100)) * $model['qty'],0,',','.') ?>
+                                                        <br><?php echo $model['deal_discount']; ?>% Discount -<?php echo number_format((($model['product_price']+$model['product_options_price']) * ($model['deal_discount']/100)) * $model['qty'],0,',','.') ?>
                                                     <?php } ?>
                                                     <?php if($model['deal_category_id'] == 3 && $model['qty'] >= $model['deal_quantity_threeshold']){ ?>
                                                         <br>Discount -<?php echo number_format((($model['product_price']+$model['product_options_price']) * ($model['deal_discount']/100)) * $model['qty'],0,',','.') ?>
@@ -101,7 +101,7 @@
                                             <?php if($model['deal_category_id'] == 2){ ?>
                                             <tr class="cart-get">
                                                 <th>You Get</th>
-                                                <td><span class="amount"> <?= $model['product_name'] ?><strong class="product-quantity"> × <?= $model['deal_quantity'] ?></strong></span>
+                                                <td><span class="amount"> <?= $model['product_name'] ?><strong class="product-quantity"> <?= $model['deal_quantity'] ?> P/cs</strong></span>
                                                 </td>
                                             </tr>
                                             <?php } ?>
@@ -119,7 +119,7 @@
 
                                             <tr class="order-total">
                                                 <th>Order Total</th>
-                                                <td><strong><span class="amount">Rp <?php echo $sum * ((100-$coupondiscount)/100) ?></span></strong> </td>
+                                                <td><strong><span class="amount">Rp <?php echo number_format($sum * ((100-$coupondiscount)/100),0,',','.') ?></span></strong> </td>
                                             </tr>
 
                                         </tfoot>
@@ -142,44 +142,23 @@
                                         <div class="woocommerce-billing-fields">
                                             <h3>Billing Details</h3>
 
-                                            <!-- <?php $form = ActiveForm::begin(['class'=>'form-horizontal', 'action'=>Url::toRoute(['checkout/place-order'])]); ?>
-
-                                            <?= $form->field($modelOrder, 'order_code')->textInput(['maxlength' => true]) ?>
-
-                                            <?= $form->field($modelOrder, 'delivery_address_id')->textInput() ?>
-
-                                            <div class="form-group">
-                                                <?= Html::submitButton('Place Order', ['class' => 'btn btn-primary', 'name' => 'order-button']) ?>
-                                                </div>
-
-                                            <?php ActiveForm::end(); ?> -->
-
                                             <?php $form = ActiveForm::begin(['class'=>'form-horizontal', 'action'=>Url::toRoute(['checkout/place-order'])]); ?>
-
-                                                <!-- <?php $i=1;foreach ($modelAddress as $address): ?>
-                                                
-                                                <?= $form->field($modelOrder, 'delivery_address_id')->radioList([$address->delivery_address_id=>$i]); $i++ ?>
-
-                                                <?= DetailView::widget([
-                                                    'model' => $address,
-                                                    'attributes' => [
-                                                        'delivery_address_name',
-                                                        'delivery_address_address:ntext',
-                                                    ],
-                                                ]) ?>
-
-                                                <?php endforeach;?> -->
-                                                <?= Html::activeDropDownList($modelOrder, 'delivery_address_id',
-                                                    ArrayHelper::map(DeliveryAddress::find()->where(['customer_id' => Yii::$app->user->id])->all(), 'delivery_address_id', 'delivery_address_address'))
-                                                ?> <br><br>
-
-                                                <!-- <?= $form->field($modelOrder, 'order_code')->textInput(['maxlength' => true]) ?> -->
+                                                <?php
+                                                    echo $form->field($modelOrder, 'delivery_address_id')->widget(Select2::classname(), [
+                                                        'data' => ArrayHelper::map(DeliveryAddress::find()->where(['customer_id' => Yii::$app->user->id])->all(), 'delivery_address_id', 'delivery_address_address'),
+                                                        'options' => ['placeholder' => 'Choose your address ...'],
+                                                        'pluginOptions' => [
+                                                            'allowClear' => true
+                                                        ],
+                                                    ]);
+                                                ?>
 
                                                 <div class="form-group">
                                                 <?= Html::submitButton('Place Order', ['class' => 'btn btn-primary', 'name' => 'order-button']) ?>
                                                 </div>
 
                                             <?php ActiveForm::end(); ?>
+
                                             <div class="clear"></div>
 
                                         </div>

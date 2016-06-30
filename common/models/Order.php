@@ -23,12 +23,13 @@ use Yii;
  */
 class Order extends \yii\db\ActiveRecord
 {
-    const PAYMENT_STATUS_NOT_VERIFIED = 0;
-    const PAYMENT_STATUS_PENDING = 10;
+    const PAYMENT_STATUS_NOT_CONFIRM = 0;
+    const PAYMENT_STATUS_NOT_VERIFIED = 10;
     const PAYMENT_STATUS_VERIFIED = 20;
 
     const ORDER_STATUS_PENDING = 0;
     const ORDER_STATUS_PROCESSING = 10;
+    const ORDER_STATUS_DELIVERED = 20;
 
     /**
      * @inheritdoc
@@ -69,10 +70,10 @@ class Order extends \yii\db\ActiveRecord
 
     public function formatPaymentstatus() {
         if ($this->payment_status == 0)
-            return "Not Verified";
+            return "Not Confirm";
         else if
             ($this->payment_status == 10)
-            return "Pending";
+            return "Not Verified";
         else if
             ($this->payment_status == 20)
             return "Verified";
@@ -85,6 +86,9 @@ class Order extends \yii\db\ActiveRecord
         else if
             ($this->order_status == 10)
             return "Processing";
+        else if
+            ($this->order_status == 20)
+            return "Delivered";
         else return "Not Set";
     }
 

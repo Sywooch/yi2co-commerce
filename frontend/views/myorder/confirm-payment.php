@@ -15,6 +15,7 @@
 	use yii\bootstrap\ActiveForm;
 	use yii\helpers\ArrayHelper;
 	use common\models\BankTransfer;
+	use kartik\widgets\Select2;
 ?>
 
 <?php
@@ -28,14 +29,21 @@
 
 <div class="row">
 	<div class="col-lg-5">
-		<p>Your Total Order is: <strong><?php echo $sum;?></strong></p>
+		<p>Your Total Order is: Rp <?php echo number_format($sum,0,',','.');?></p>
+        <p>Shipping Cost: Rp <?php echo number_format($shipping,0,',','.') ?></p>
+        <p>Total you have to transfer: <strong>Rp <?php echo number_format($sum + $shipping,0,',','.') ?></strong></p>
 		<p>Enter your payment details for order code: <strong><?php echo $modelOrder->order_code; ?></strong></p>
 		<?php $form = ActiveForm::begin(['id' => 'payment-form']); ?>
 
-			<?= Html::activeLabel($modelPayment, 'bank_transfer_id') ?> <br>
-		    <?= Html::activeDropDownList($modelPayment, 'bank_transfer_id',
-		        ArrayHelper::map(BankTransfer::find()->all(), 'bank_transfer_id', 'bank_transfer_text'), ['prompt'=>'Select Bank Destination'])
-		    ?> <br><br>
+			<?php
+                echo $form->field($modelPayment, 'bank_transfer_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(BankTransfer::find()->all(), 'bank_transfer_id', 'bank_transfer_text'),
+                    'options' => ['placeholder' => 'Select Bank Destination ...'],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ]);
+            ?>
 
 		    <?= $form->field($modelPayment, 'payment_conf_name')->textInput() ?>
 

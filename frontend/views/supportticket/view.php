@@ -52,7 +52,7 @@ use yii\helpers\Html;
         <div class="span6" style="padding-bottom: 10px; border-bottom: 1px solid black; border-top: 1px solid black;">
             <div class="highlighted-box center">
             <span style="float: right;"><?php echo $data->date_submit; ?></span>
-            <h2><?php if (isset($data->admin_id)){echo $data->admin->admin_name;}else{echo $data->customer->customer_name;} ?></h2>
+            <h2><?php if (isset($data->admin_id)){echo 'Admin - ' . $data->admin->username;}else{echo $data->customer->customer_name;} ?></h2>
             <p><?php echo $data->message ?></p>
                 
             </div>

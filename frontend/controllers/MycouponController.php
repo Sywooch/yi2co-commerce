@@ -62,7 +62,7 @@ class MycouponController extends Controller
 
 		foreach($countCouponlist as $data){
 			$modelCoupon = Coupon::find()->where(['coupon_id'=>$data->coupon_id])->one();
-			if($modelCoupon->coupon_date_end <= $current_date){
+			if(strtotime($modelCoupon->coupon_date_end) <= $current_date){
 				$data->coupon_list_status = 20;
 				$data->save();
 			}
@@ -84,7 +84,7 @@ class MycouponController extends Controller
 		$current_date = strtotime("now");
 		$countCoupon = Coupon::find()->where(['coupon_status'=>'10'])->all();
 		foreach($countCoupon as $data){
-			if($data->coupon_date_end <= $current_date){
+			if(strtotime($data->coupon_date_end) <= $current_date){
 				$data->coupon_status=0;
 				$data->save();
 			}

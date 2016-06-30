@@ -22,6 +22,26 @@ use yii\helpers\Url;
 
                 <!-- User Account: style can be found in dropdown.less -->
 
+                <li class="dropdown notifications-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <i class="fa fa-bell-o"></i>
+                      <span class="label label-warning"><?php echo common\models\SupportTicket::getNotification();?></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li class="header">You have <?php echo common\models\SupportTicket::getNotification(); ?> notifications</li>
+                      <li>
+                        <!-- inner menu: contains the actual data -->
+                        <ul class="menu">
+                          <li>
+                            <a href="<?php echo Url::to(['supportticket/index']); ?>">
+                              <i class="fa fa-users text-aqua"></i> <?php echo common\models\SupportTicket::getNotification(); ?> new support ticket
+                            </a>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                </li>
+
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="user-image" alt="User Image"/> -->

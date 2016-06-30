@@ -85,7 +85,7 @@ class MyorderController extends Controller
             $modelPayment->load(Yii::$app->request->post());
             $modelPayment->order_code = $ordercode;
             $modelPayment->save();
-            $modelOrder->payment_status = $modelOrder::PAYMENT_STATUS_PENDING;
+            $modelOrder->payment_status = $modelOrder::PAYMENT_STATUS_NOT_VERIFIED;
             $modelOrder->save();
             return $this->redirect(['index']);
         }
@@ -98,6 +98,7 @@ class MyorderController extends Controller
             'data' => $results,
             'sum' => NULL,
             'save' => NULL,
+            'shipping' => $modelOrder->deliveryAddress->city->shipping_cost,
         ]);
     }
 

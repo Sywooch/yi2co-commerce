@@ -37,6 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $data->dealCategory->deal_category_name;
                 },
             ],
+            'discount_value',
+            'get_quantity',
+            'quantity_threeshold',
+            'sum_threeshold',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

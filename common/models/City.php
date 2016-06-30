@@ -31,7 +31,7 @@ class City extends \yii\db\ActiveRecord
     {
         return [
             [['province_id', 'city_name'], 'required'],
-            [['province_id'], 'integer'],
+            [['province_id', 'shipping_cost'], 'integer'],
             [['city_name'], 'string', 'max' => 64]
         ];
     }
@@ -45,6 +45,7 @@ class City extends \yii\db\ActiveRecord
             'city_id' => 'City ID',
             'province_id' => 'Province Name',
             'city_name' => 'City Name',
+            'shipping_cost' => 'Shipping Cost'
         ];
     }
 

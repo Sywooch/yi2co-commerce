@@ -62,7 +62,9 @@ class ProductoptionsController extends Controller
     {
         $model = new ProductOptions();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->product_options_text = $_POST['ProductOptions']['product_options_name'] . " | " . $_POST['ProductOptions']['product_options_price'];
+            $model->save();
             return $this->redirect(['view', 'id' => $model->product_options_id]);
         } else {
             return $this->render('create', [
@@ -81,7 +83,9 @@ class ProductoptionsController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->product_options_text = $_POST['ProductOptions']['product_options_name'] . " | " . $_POST['ProductOptions']['product_options_price'];
+            $model->save();
             return $this->redirect(['view', 'id' => $model->product_options_id]);
         } else {
             return $this->render('update', [

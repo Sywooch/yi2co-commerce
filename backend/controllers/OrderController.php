@@ -45,6 +45,7 @@ class OrderController extends Controller
         $i++;
         }
         $model->payment_status = 20;
+        $model->order_status = 10;
         $model->approved_by = Yii::$app->user->id;
         $model->save();
         $modelCustomer->customer_reward_point += $point;
@@ -59,6 +60,15 @@ class OrderController extends Controller
      */
     public function actionIndex()
     {
+        date_default_timezone_set('Asia/Jakarta');
+        $current_date = strtotime("now");
+        $countOrder = Order::find()->where(['order_status'=>'0'])->all();
+        foreach($countOrder as $data){
+            if((strtotime($data->order_date)+10800) <= $current_date){
+                $data->delete();
+            }
+        }
+
         $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

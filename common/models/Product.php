@@ -30,7 +30,7 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_image'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['product_image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['product_category_id', 'manufacturer_id', 'product_name', 'product_model', 'product_price', 'product_description'], 'required'],
             [['product_category_id', 'manufacturer_id', 'product_price', 'product_reward_point', 'deal_deal_id', 'deal_category_id', 'product_status'], 'integer'],
             ['product_reward_point', 'default', 'value' => 0],

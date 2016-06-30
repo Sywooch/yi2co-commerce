@@ -16,7 +16,7 @@
     </td>
 
     <td class="product-name">
-        <a href="single-product.html"><?= $model['product_name'] ?> <?= $model['product_options_name'] ?></a> 
+        <a href="single-product.html"><?= $model['product_name'] ?> <?php if($model['product_options_name']!="default"){echo $model['product_options_name'];} ?></a> 
     </td>
 
     <td class="product-price">

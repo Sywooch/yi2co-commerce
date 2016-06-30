@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use common\models\Product;
+use kartik\widgets\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Newsletter */
@@ -11,22 +12,32 @@ use common\models\Product;
 ?>
 
 <div class="newsletter-form">
+    <div class="row">
+        <div class="col-lg-5">
+            <?php $form = ActiveForm::begin(); ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+            <?php
+                echo $form->field($model, 'product_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(Product::find()->all(), 'product_id', 'product_name'),
+                    'options' => ['placeholder' => 'Select a product ...'],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ])->label('Product');
+            ?>
 
-    <?= Html::activeLabel($model, 'product_id') ?> <br>
-    <?= Html::activeDropDownList($model, 'product_id',
-        ArrayHelper::map(Product::find()->all(), 'product_id', 'product_name'), ['prompt'=>'Select Product'])
-    ?> <br><br>
+            <?= $form->field($model, 'newsletter_title')->textInput() ?>
 
-    <!-- <?= $form->field($model, 'product_id')->textInput() ?> -->
+            <?= $form->field($model, 'newsletter_message')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'newsletter_message')->textarea(['rows' => 6]) ?>
+            <div class="form-group">
+                <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            </div>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?php ActiveForm::end(); ?>
+
+        </div>
     </div>
 
-    <?php ActiveForm::end(); ?>
-
+    
 </div>

@@ -120,4 +120,12 @@ class Cart extends \yii\db\ActiveRecord
             return TRUE;
         }
     }
+
+    public function checkSumThreeshold($sumcheck, $threeshold){
+        if ($sumcheck < $threeshold) {
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 }

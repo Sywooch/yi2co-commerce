@@ -118,6 +118,40 @@ class ProductController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelCache = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post())) {
+            $modelDeal = \common\models\Deal::find()->where(['deal_id'=>$_POST['Product']['deal_deal_id']])->one();
+            $model->product_image = UploadedFile::getInstance($model, 'product_image');
+            if(count($modelDeal)>0){
+                $model->deal_category_id = $modelDeal->deal_category_id;
+            }
+            if(count($modelDeal)==0){
+                $model->deal_category_id = null;
+            }
+            if ($model->save() && $model->product_image != null && $model->product_image != $modelCache->product_image){
+                /*$model->product_image = UploadedFile::getInstance($model, 'product_image');*/
+                $model->product_image->saveAs(self::URL . $model->product_image->baseName . '.' . $model->product_image->extension);
+                Image::getImagine()->open(self::URL . $model->product_image)->thumbnail(new Box(195, 243))->save(self::URL_THUMB . $model->product_image, ['quality' => 90]);
+                /*$model->save();*/
+                return $this->redirect(['view', 'id' => $model->product_id]);    
+            } else {
+                $model->product_image = $modelCache->product_image;
+                $model->save();
+                return $this->redirect(['view', 'id' => $model->product_id]);
+            }
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+                'modelCache' => $modelCache,
+            ]);
+        }
+    }
+
+
+    /*public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
             $modelDeal = \common\models\Deal::find()->where(['deal_id'=>$_POST['Product']['deal_deal_id']])->one();
@@ -133,7 +167,7 @@ class ProductController extends Controller
                 'model' => $model,
             ]);
         }
-    }
+    }*/
 
     /**
      * Updates an existing Product model.

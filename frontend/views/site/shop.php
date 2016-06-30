@@ -45,10 +45,6 @@
         <div class="container">
             <div class="row">
 
-                <!-- 
-                    Untuk Number Formatter number_format(,0,',','.')
-                 -->
-
                 <?php foreach($models as $data):?>
                 <div class="col-md-3 col-sm-6">
                     <div class="single-shop-product">
@@ -63,14 +59,18 @@
                                 <ins>Rp <?php echo number_format($data->product_price,0,',','.')?></ins> Buy <?php echo $data->dealDeal->quantity_threeshold ?> Get <?php echo $data->dealDeal->get_quantity - $data->dealDeal->quantity_threeshold ?><!-- <br><?php echo $data->product_reward_point; ?> -->
                             <?php } elseif($data->deal_category_id == 3) {?>
                                 <ins>Rp <?php echo number_format($data->product_price,0,',','.')?></ins> Buy <?php echo $data->dealDeal->quantity_threeshold ?> Discount <?php echo $data->dealDeal->discount_value ?> %<!-- <br><?php echo $data->product_reward_point; ?> -->
+                            <?php } elseif($data->deal_category_id == 4) {?>
+                                <ins>Rp <?php echo number_format($data->product_price,0,',','.')?></ins> Buy total Rp <?php echo number_format($data->dealDeal->sum_threeshold,0,',','.') ?> Discount <?php echo $data->dealDeal->discount_value ?> %<!-- <br><?php echo $data->product_reward_point; ?> -->
                             <?php } else {?>
                                 <ins>Rp <?php echo number_format($data->product_price,0,',','.')?></ins><!-- <br><?php echo $data->product_reward_point; ?> -->
                             <?php } ?>
                         </div>  
+
+                        <p><?php /*if($data->product_reward_point!=0)*/{echo $data->product_reward_point . ' reward point';} ?></p>
                         
                         <div class="product-option-shop">
                             <!-- <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" href="/canvas/shop/?add-to-cart=70">Add to cart</a> -->
-                            <?php $form = ActiveForm::begin(['class'=>'form-horizontal', 'action'=>Url::toRoute(['cart/add-to-cart', 'id'=>$data->product_id])]); ?>
+                            <?php $form = ActiveForm::begin(['class'=>'form-horizontal', 'action'=>Url::to(['cart/add-to-cart', 'id'=>$data->product_id])]); ?>
                                 <?= Html::input('submit', 'submit', 'Add to cart',['class'=>'button add',]) ?>
                             <?php ActiveForm::end(); ?>
                         </div>                       

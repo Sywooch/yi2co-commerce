@@ -9,7 +9,7 @@ use yii\bootstrap\ActiveForm;
 ?>
 <div class="password-reset">
 
-    <h3><?= Html::encode($newsletter->newsletter_title)</h3>
+    <h3><?= Html::encode($newsletter->newsletter_title)?></h3>
 
     <p>Hello <?= Html::encode($customer->customer_name) ?>,</p>
 

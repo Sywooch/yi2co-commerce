@@ -7,6 +7,9 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use kartik\widgets\DatePicker;
+use kartik\widgets\Select2;
+use yii\helpers\ArrayHelper;
+use common\models\City;
 
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
@@ -36,11 +39,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'customer_address')->textarea(['rows' => 6]) ?>
 
+                <?php
+                    echo $form->field($modelAddress, 'city_id')->widget(Select2::classname(), [
+                        'data' => ArrayHelper::map(City::find()->all(), 'city_id', 'city_name'),
+                        'options' => ['placeholder' => 'Select a city ...'],
+                        'pluginOptions' => [
+                            'allowClear' => true
+                        ],
+                    ]);
+                ?>
+
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
                 <?= $form->field($model, 'email') ?>
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
+
+                <?= $form->field($model, 'newsletter')->dropDownList(['0' => 'No', '10' => 'Yes'], ['prompt' => 'Receive Newsletter']);?>
 
                 <div class="form-group">
                     <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>

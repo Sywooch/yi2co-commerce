@@ -2,6 +2,8 @@
 namespace frontend\models;
 
 use common\models\Customer;
+use common\models\DeliveryAddress;
+use common\models\City;
 use yii\base\Model;
 use Yii;
 
@@ -19,6 +21,7 @@ class SignupForm extends Model
     public $customer_telephone;
     public $customer_address;
     public $customer_reward_point;
+    public $newsletter;
 
     /**
      * @inheritdoc
@@ -30,6 +33,7 @@ class SignupForm extends Model
             ['customer_address', 'string'],
             ['customer_name', 'string', 'max' => 64],
             ['customer_telephone', 'string', 'max' => 20],
+            ['newsletter', 'integer'],
 
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
@@ -64,12 +68,14 @@ class SignupForm extends Model
         $user->customer_gender = $this->customer_gender;
         $user->customer_telephone = $this->customer_telephone;
         $user->customer_address = $this->customer_address;
+        $user->newsletter = $this->newsletter;
 
         $user->username = $this->username;
         $user->email = $this->email;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         
-        return $user->save() ? $user : null;
+        return ($user->save() ? $user : null && $user->save() ? $user : null);
+
     }
 }

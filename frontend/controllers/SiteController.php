@@ -17,6 +17,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\City;
 use yii\base\InvalidParamException;
 use yii\db\Expression;
 use yii\web\BadRequestHttpException;
@@ -183,16 +184,25 @@ class SiteController extends YiishopController
     public function actionSignup()
     {
         $model = new SignupForm();
+        $modelAddress = new DeliveryAddress();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
+                    $findCity = City::find()->where(['city_id' => $_POST['DeliveryAddress']['city_id']])->one();
+                    $modelAddress->customer_id = Yii::$app->user->id;
+                    $modelAddress->city_id = $_POST['DeliveryAddress']['city_id'];
+                    $modelAddress->delivery_address_name = $_POST['SignupForm']['customer_name'];
+                    $modelAddress->delivery_address_address = $_POST['SignupForm']['customer_address'] . " - " . $findCity->city_name;
+                    $modelAddress->save();
                     return $this->goHome();
                 }
+                
             }
         }
 
         return $this->render('signup', [
             'model' => $model,
+            'modelAddress' => $modelAddress,
         ]);
     }
 
@@ -316,6 +326,7 @@ class SiteController extends YiishopController
             ->orderBy(['comment_date_added' => SORT_DESC])
             ->all();
         $options = ProductOptions::find()->where(['product_id' => Yii::$app->getRequest()->getQueryParam('id')])->all();
+        $optionsCheck = ProductOptions::find()->where(['product_id' => Yii::$app->getRequest()->getQueryParam('id')])->andWhere(['not', ['product_options_name'=>"default"]])->one();
         $cart = new MultipleAddToCartForm();
         
         if (Yii::$app->request->post()) {
@@ -333,6 +344,7 @@ class SiteController extends YiishopController
             'comment' => $comment,
             'addComment' => $addComment,
             'category' => $category,
+            'optionsCheck' => $optionsCheck,
         ]);
     }
 

@@ -62,7 +62,7 @@
                                         <?php
                                             $i=1;
                                             foreach($data as $model){
-                                                $sum = $sum+ (($model['product_price'] + $model['product_options_price'] - ($model['product_price']*($model['deal_discount']/100))) * $model['qty']);
+                                                $sum = $sum+ (($model['product_price'] + $model['product_options_price'] - (($model['product_price']+$model['product_options_price'])*($model['deal_discount']/100))) * $model['qty']);
                                                 echo $this->render('_cart_item',['model'=>$model, 'sum'=>$sum, 'i'=>$i]);
                                                 $i++;
                                             }
@@ -79,7 +79,7 @@
                                                             echo \yii\helpers\Html::textInput('coupon_code');
                                                             echo \yii\helpers\Html::submitButton('Apply Coupon' , ['class'=>'button']);
                                                         } else {
-                                                            echo $discount->coupon_code;
+                                                            echo $discount->coupon_code . " - " . $discount->coupon_discount . " % Discount";
                                                         }
                                                     ?>
                                                     <!-- <?php echo \yii\helpers\Html::hiddenInput('coupon_code', ''); ?> -->
@@ -126,7 +126,7 @@
                                         <a href="single-product.html">
                                             <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="<?php echo Yii::getAlias('@imageurl')."/".$data['product_image']; ?>">
                                             <h3><?php echo $data['product_name']; echo ' '; echo $product->product_options_name; ?></h3>
-                                            <span class="price"><span class="amount">Rp <?php echo $data['product_price'] + $product->product_options_price; ?></span></span>
+                                            <span class="price"><span class="amount">Rp <?php echo number_format($data['product_price'] + $product->product_options_price,0,',','.'); ?></span></span>
                                         </a>
 
                                         <?php echo Html::a('Add to Cart', Url::to(['cart/upsell-add-to-cart', 'id' => $data['product_id'],'options'=>$opt->product_options_id]), ['class'=>'add_to_cart_button']); ?>

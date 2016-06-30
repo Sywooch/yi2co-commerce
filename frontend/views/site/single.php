@@ -102,22 +102,22 @@ $this->params['breadcrumbs'][] = ['label' => $model->product_name];
                                     <h2 class="product-name"><?php echo $model->product_name; ?></h2>
                                     <div class="product-inner-price">
                                         <?php if($model->deal_category_id == 1) { ?>
-                                            <ins>Rp <?php echo number_format($model->product_price * ((100-$model->dealDeal->discount_value)/100),0,',','.');?></ins> <del>Rp <?php echo number_format($model->product_price,0,',','.');?></del><!-- <br><?php echo $model->product_reward_point; ?> -->
+                                            <ins>Rp <?php echo number_format($model->product_price * ((100-$model->dealDeal->discount_value)/100),0,',','.');?></ins> <del>Rp <?php echo number_format($model->product_price,0,',','.');?></del> <br><?php echo $model->product_reward_point . ' reward point'; ?>
                                         <?php } elseif($model->deal_category_id == 2) {?>
-                                            <ins>Rp <?php echo number_format($model->product_price,0,',','.')?></ins> Buy <?php echo $model->dealDeal->quantity_threeshold ?> Get <?php echo $model->dealDeal->get_quantity - $model->dealDeal->quantity_threeshold ?><!-- <br><?php echo $model->product_reward_point; ?> -->
+                                            <ins>Rp <?php echo number_format($model->product_price,0,',','.')?></ins> Buy <?php echo $model->dealDeal->quantity_threeshold ?> Get <?php echo $model->dealDeal->get_quantity - $model->dealDeal->quantity_threeshold ?> <br><?php echo $model->product_reward_point . ' reward point'; ?>
                                         <?php } elseif($model->deal_category_id == 3) {?>
-                                            <ins>Rp <?php echo number_format($model->product_price,0,',','.')?></ins> Buy <?php echo $model->dealDeal->quantity_threeshold ?> Discount <?php echo $model->dealDeal->discount_value ?> %<!-- <br><?php echo $model->product_reward_point; ?> -->
+                                            <ins>Rp <?php echo number_format($model->product_price,0,',','.')?></ins> Buy <?php echo $model->dealDeal->quantity_threeshold ?> Discount <?php echo $model->dealDeal->discount_value ?> % <br><?php echo $model->product_reward_point . ' reward point'; ?>
                                         <?php } else {?>
-                                            <ins>Rp <?php echo number_format($model->product_price,0,',','.')?></ins><!-- <br><?php echo $model->product_reward_point; ?> -->
+                                            <ins>Rp <?php echo number_format($model->product_price,0,',','.')?></ins> <br><?php echo $model->product_reward_point . ' reward point'; ?>
                                         <?php } ?>
                                     </div>    
                                     
                                         <?php $form = ActiveForm::begin(['options'=>['class'=>'cart'], 'action'=>Url::toRoute(['cart/multiple-add-to-cart', 'id' => Yii::$app->getRequest()->getQueryParam('id'), 'quantity'=>'', 'options'=>''])]); ?>
                                         <div class="quantity">
                                         <?= $form->field($cart, 'quantity')->textInput(['class' => 'input-text qty text', 'size'=>'4', 'type'=>'number', 'title'=>'Qty', 'value'=>'1', 'min'=>'1', 'step'=>'1']) ?>
-                                            <?php if ($options) { ?>
+                                            <?php if ($optionsCheck) { ?>
                                             <?= Html::activeLabel($cart, 'product_options_id') ?> <br>
-                                            <?= Html::activeDropDownList($cart, 'product_options_id', ArrayHelper::map(ProductOptions::find()->where(['product_id' => Yii::$app->getRequest()->getQueryParam('id')])->all(), 'product_options_id', 'product_options_name')) ?><br><br>
+                                            <?= Html::activeDropDownList($cart, 'product_options_id', ArrayHelper::map(ProductOptions::find()->where(['product_id' => Yii::$app->getRequest()->getQueryParam('id')])->all(), 'product_options_id', 'product_options_text')) ?><br><br>
                                             <?php } ?>
 
                                         </div>

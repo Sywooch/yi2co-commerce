@@ -56,7 +56,9 @@ class CheckoutController extends Controller
 
 		if (Yii::$app->request->post()) {
 			$modelAddAddress->load(Yii::$app->request->post());
+			$findCity = \common\models\City::find()->where(['city_id'=>$_POST['DeliveryAddress']['city_id']])->one();
 			$modelAddAddress->customer_id = $id;
+			$modelAddAddress->delivery_address_address = $_POST['DeliveryAddress']['delivery_address_address'] . " - " . $findCity->city_name;
 			$modelAddAddress->save();
 			return $this->redirect(['index']);
 		}
@@ -103,6 +105,8 @@ class CheckoutController extends Controller
 		            'quantity' => $data['qty'],
 		            'subtotal' => $data['product_price'] * $data['qty'],
 		            'options' => $data['product_options_id'],
+		            'optionsname' => $data['product_options_name'],
+		            'optionsprice' => $data['product_options_price'],
 		            'deal' => $data['deal_id'],
 		            'dealcategory' => $data['deal_category_id'],
 		            'dealdiscount' => $data['deal_discount'],
@@ -124,18 +128,24 @@ class CheckoutController extends Controller
 		}
 	}
 
-	public function actionSaveOrderList($id, $quantity, $subtotal, $options, $deal, $dealcategory, $dealdiscount, $dealquantity, $dealquantitythreeshold) {
+	public function actionSaveOrderList($id, $quantity, $subtotal, $options, $optionsname, $optionsprice, $deal, $dealcategory, $dealdiscount, $dealquantity, $dealquantitythreeshold) {
         $model = new OrderList();
         $model->order_code = $this->getOrderCode();
         $model->product_id = $id;
+        $model->product_options_id = $options;
+        $model->product_options_name = $optionsname;
+        $model->product_options_price = $optionsprice;
+
         $model->quantity = $quantity;
         $model->subtotal = $subtotal;
-        $model->product_options_id = $options;
+        
         $model->deal_id = $deal;
         $model->deal_category_id = $dealcategory;
         $model->deal_discount = $dealdiscount;
         $model->deal_quantity = $dealquantity;
         $model->deal_quantity_threeshold = $dealquantitythreeshold;
+
+        
         $model->save();
     }
 
@@ -173,4 +183,5 @@ class CheckoutController extends Controller
 			'modelOrder' => $modelOrder,
 		]);
 	}
+
 }

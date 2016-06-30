@@ -12,27 +12,32 @@ use kartik\widgets\Select2;
 ?>
 
 <div class="city-form">
+    <div class="row">
+        <div class="col-lg-3">
+            <?php $form = ActiveForm::begin(); ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+            <?php
+                echo $form->field($model, 'province_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(Province::find()->all(), 'province_id', 'province_name'),
+                    'options' => ['placeholder' => 'Select a province ...'],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ]);
+            ?>
 
-    <?php
-        echo $form->field($model, 'province_id')->widget(Select2::classname(), [
-            'data' => ArrayHelper::map(Province::find()->all(), 'province_id', 'province_name'),
-            'options' => ['placeholder' => 'Select a province ...'],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ]);
-    ?>
+            <!-- <?= $form->field($model, 'province_id')->textInput() ?> -->
 
-    <!-- <?= $form->field($model, 'province_id')->textInput() ?> -->
+            <?= $form->field($model, 'city_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'city_name')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'shipping_cost')->textInput() ?>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <div class="form-group">
+                <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            </div>
+
+            <?php ActiveForm::end(); ?>
+        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
 
 </div>

@@ -47,8 +47,12 @@ class SupportticketController extends Controller
     {
         $listmessage = SupportTicketMessage::find()
             ->where(['support_ticket_id' => $id])
+            ->orderBy(['date_submit' => SORT_ASC])
             ->all();
         $addmessage = new SupportTicketMessage();
+        $notif = $this->findModel($id);
+        $notif->notification = 10;
+        $notif->save();
 
         if (Yii::$app->request->post()) {
             $addmessage->load(Yii::$app->request->post());

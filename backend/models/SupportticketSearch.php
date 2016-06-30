@@ -18,7 +18,7 @@ class SupportticketSearch extends SupportTicket
     public function rules()
     {
         return [
-            [['support_ticket_id', 'support_ticket_category_id', 'customer_id', 'support_ticket_status'], 'integer'],
+            [['support_ticket_id', 'support_ticket_category_id', 'customer_id', 'support_ticket_status', 'notification'], 'integer'],
             [['issue', 'date_submit'], 'safe'],
         ];
     }
@@ -61,6 +61,7 @@ class SupportticketSearch extends SupportTicket
             'date_submit' => $this->date_submit,
             'customer_id' => $this->customer_id,
             'support_ticket_status' => $this->support_ticket_status,
+            'notification' => $this->notification,
         ]);
 
         $query->andFilterWhere(['like', 'issue', $this->issue]);

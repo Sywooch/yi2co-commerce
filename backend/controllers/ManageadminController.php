@@ -80,9 +80,7 @@ class ManageadminController extends Controller
         $model = new RegisterAdminForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
+                    return $this->redirect(['index']);
             }
         }
 

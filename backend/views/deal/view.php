@@ -32,10 +32,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'deal_name',
             'deal_date_start:date',
             'deal_date_end:date',
+
             [
                 'attribute' => 'deal_category_id',
                 'value' => $model->dealCategory->deal_category_name,
             ],
+            'discount_value',
+            'get_quantity',
+            'quantity_threeshold',
+            'sum_threeshold',
         ],
     ]) ?>
 

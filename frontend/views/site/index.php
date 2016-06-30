@@ -66,7 +66,7 @@
                         
                         <div class="product-option-shop">
                             <!-- <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" href="/canvas/shop/?add-to-cart=70">Add to cart</a> -->
-                            <?php $form = ActiveForm::begin(['class'=>'form-horizontal', 'action'=>Url::toRoute(['cart/add-to-cart', 'id'=>$data->product_id])]); ?>
+                            <?php $form = ActiveForm::begin(['class'=>'form-horizontal', 'action'=>Url::to(['cart/add-to-cart', 'id'=>$data->product_id])]); ?>
                                 <?= Html::input('submit', 'submit', 'Add to cart',['class'=>'button add',]) ?>
                             <?php ActiveForm::end(); ?>
                         </div>                       
